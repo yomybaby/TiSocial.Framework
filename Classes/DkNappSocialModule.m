@@ -271,6 +271,9 @@
             
             if ([arrayOfAccounts count] > 0) {
                 ACAccount *fbAccount = [arrayOfAccounts lastObject];
+                ACAccountCredential *fbCredential = [fbAccount credential];
+                NSString *accessToken = [fbCredential oauthToken];
+                //NSLog(@"Facebook Access Token: %@", accessToken);
                 
                 //requestType: GET, POST, DELETE
                 NSInteger facebookRequestMethod = SLRequestMethodPOST;
@@ -306,7 +309,7 @@
                         }
                         
                         NSArray *response = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
-                        NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys: isSuccess,@"success", response,@"response", nil];
+                        NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys: isSuccess,@"success", response,@"response", accessToken, @"accessToken", nil];
                         [self fireEvent:callbackEventName withObject:event];
                     }];
                     
